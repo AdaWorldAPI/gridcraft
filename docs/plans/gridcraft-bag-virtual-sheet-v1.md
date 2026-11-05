@@ -62,3 +62,11 @@ Mount one synthetic DR256×256 Bag (65,536 identities, 24 fields) into a virtual
 | Cross-repo oracle | P6 GridCraft | Falsifiers before implementation |
 
 **Decision log 2026-11-05:** propose an additive Bag-backed virtual mode first, not an all-at-once replacement of GridCraft. **Implementation successor:** only after P0/P1/P2 approval, isolated provider trait + one read-only viewport, no production edits here.
+
+## Architectural direction: one long-term execution core, not two (2026-11-05)
+
+The additive BagSheet mode above is an **incremental proof and migration bridge**, not the desired permanent architecture. The long-term target replaces value-owning workbook execution with a single witnessed Bagop/F### method core while retaining GridCraft's formula grammar, XLSX interoperability, presentation and user interaction. Standalone legacy workbooks may continue to use current CellStore while migrating; they must not become a silent fallback for mounted Bag-backed formulas or a second authoritative Bag model.
+
+[GridCraft P7 #3](https://github.com/AdaWorldAPI/gridcraft/pull/3) is the formula-method plan. Specifically, `crates/functions/src/lib.rs` dispatches over already-evaluated `Arg` values, and `crates/calc/src/eval.rs` defines `Host::range_values` by collecting `Vec<Value>`; a new BagSheet source alone does **not** remove these hydration paths. Formula syntax must resolve to the owning canonical F###/Bagop MethodRef (registry identity and numeric naming not yet verified). The owner must admit each method's semantics; ndarray provides only the positional execution mechanics.
+
+**Code intelligence non-dilution:** Existing Kythe/R2IL/Codegraph meanings are not modified to host Excel functions. Derived source-location, call/def-use and formula→method provenance may project through existing, verified adapters, but do not become a second behavioral IR, source registry or runtime dependency. R2IL machine opcode semantics must never be relabeled as Excel functions. No implementation before P7 method ownership and scalar oracle gates.
