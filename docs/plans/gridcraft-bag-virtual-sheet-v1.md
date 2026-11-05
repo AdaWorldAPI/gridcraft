@@ -1,5 +1,11 @@
 # GRIDCRAFT-BAGSHEET-1: Virtual worksheet over the holographic Bag
 
+## Scope reset: deferred GridCraft consumer, NOT POC core (2026-11-05)
+
+**This document is a consumer-compatibility plan, not the foundational architecture or the first implementation sprint.** The concept POC lives in lance-graph/OGAR/ndarray, reusing **lance-graph-sap CATS typed tile folding** and **lance-graph-dir-sim GUID128 correspondence**. GridCraft is optional later, for exposing spreadsheet-shaped projections. Neither a new GridCraft engine nor a ground-up rewrite is required to demonstrate SAP-shaped PSCustomObject tile joins without materialization.
+
+Any earlier language treating an additive BagSheet, F### method registry or replacement GridCraft evaluator as a POC prerequisite is superseded. Do not implement GridCraft until the minimal scoped Guid128 tile fold has a measured independent oracle. See [P0 #1960](https://github.com/AdaWorldAPI/lance-graph/pull/1960).
+
 **Status:** PROPOSED / plan-only. **Date:** 2026-11-05. **Owner:** GridCraft. **Depends on:** lance-graph P0/P2 and ndarray P1.
 
 **Intent:** Reuse GridCraft as the familiar spreadsheet façade, but mount an authorized holographic Bag so cells, XVERWEIS and PSCustomObject-style properties are semantic projections. DR64 exists only for Bag representation. GridCraft must not create a second canonical workbook row/value authority.
