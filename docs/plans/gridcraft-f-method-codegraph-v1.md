@@ -1,97 +1,65 @@
-# GRIDCRAFT-F-METHOD-CODEGRAPH-1: Formula F### Bagop polyfills without Kythe/R2IL/Codegraph dilution
+# GRIDCRAFT-METHOD-LENS-CONSUMER-1: Formula names bind to existing DT64 behavior, not a second codegraph
 
-## Scope reset: formula polyfills deferred (2026-11-05)
+**Status:** DEFERRED CONSUMER STUDY / plan only. **Date:** 2026-11-05. **Owners:** DT64 and its codebook define immutable behavior and method identity; Quack/relalg/mask-RISC/ndarray own lawful execution. GridCraft owns formula parsing and Excel-specific presentation. Kythe/R2IL/Codegraph remain independent analysis models.
 
-F### formula polyfill/Codegraph hygiene is a **future consumer problem**, not a dependency or first milestone of the SAP-shaped GUID-tile POC. No Excel formula registry, Kythe/R2IL integration or Codegraph adapter must be built for that POC. The core work is the existing dir-sim/OGAR 128-bit scoped GUID correspondence + lance-graph-sap typed lane fold + ndarray positional discipline, returning a logical PSCustomObject-shaped tile projection without per-row object allocation. Keep this plan parked until a formula consumer requires its admission. Existing R2IL semantics and code-analysis vocabularies remain unchanged.
+## 1. Fix the operation-pointer confusion
 
-**Status:** PROPOSED / architecture only. **Date:** 2026-11-05. **Owner:** GridCraft for Excel formula grammar and presentation. **Method identity, Bagop semantics and admissibility:** existing canonical owning registries in lance-graph / OGAR, to be established by source audit. **Evidence/provenance owners:** existing Kythe, R2IL, and Codegraph components, each under its own contract.
+**XVERWEIS as an operation pointer is not Excel's return value, and not a stored or materialized result row.** The method reference names the *behavior* to invoke. Its admitted execution may produce a witnessed coordinate reference, a selection, a fold, or a terminal scalar. A later consumer dereferences a requested field or renders an Excel-compatible value.
 
-**Depends on:** [P0 lance-graph #1960](https://github.com/AdaWorldAPI/lance-graph/pull/1960), [P1 ndarray #408](https://github.com/AdaWorldAPI/ndarray/pull/408), [P2 Bagop #1961](https://github.com/AdaWorldAPI/lance-graph/pull/1961), [P3 virtual GridCraft #1](https://github.com/AdaWorldAPI/gridcraft/pull/1). **Downstream:** P5 report-rs and P6 falsifier.
+```text
+GridCraft parser / Excel spelling / other consumer call site
+       → DT64 MethodRef (class, MethodId, SigRev, guard)
+       → AlgebraRef behavior-lens word + operands, when bound
+       → DR coordinate route / source-layout witness
+       → admitted Quack/relalg/mask-RISC/ndarray operation
+       → coordinate or result, depending on method contract
+       → demanded property or Excel-visible value, if any
+```
 
-## 0. Operator ruling / scope
+This is a **consumer adapter** for a more general SAP / PSCustomObject-shaped one-key ordinal SoA substrate. It never defines DR as "a Bag" or requires Excel formulas for the first GUID128 tile POC.
 
-**Every GridCraft formula with executable meaning must be resolved to a canonical, typed F### method polyfill, or be explicitly classified as NOT ADMITTED.** F### denotes the user's method-vocabulary convention. **Do not assume a particular F### numbering, width, global registry or deployed implementation exists merely from the convention.** Source-audit the owning registry first; never invent local F### ordinals in GridCraft.
+## 2. Reuse real DT64 contracts, not invented F IDs
 
-**DR64 only holographically represents the Bag; Bagop interprets it; ndarray supplies positional execution.** GridCraft retains Excel syntax, names, formatting and editing, not a second semantics-bearing workbook interpreter. An F### method is a *typed, witnessed semantic binding*, not a new per-cell executable heap object or a new general DR64 instruction set.
+The existing [DT64 implementation](https://github.com/AdaWorldAPI/lance-graph/blob/main/crates/lance-graph-dt64/src/lib.rs) already defines:
 
-**Kythe / R2IL / Codegraph must not be diluted.** Reuse their established source/behavioral facts as evidence or graph projections. Do not rebrand Excel formula AST nodes as machine-level R2IL opcodes; do not create a second Kythe graph schema, a second behavioral IR, or a GridCraft-local Codegraph truth registry. Formula-specific meaning belongs to the F### / Bagop method contract, not a fork of code-analysis semantics.
+- `MethodId` independent of method name; `MethodRef` binds `class`, `method`, `sig_rev` and a guard witness. Renaming an Excel spelling does not mint a new operation identity.
+- `AlgebraRef { lens, word }`: a polyfill word is a field **position** under a codebook's behavior lens. DT64 recognizes the `0xF###` right-half behavior-lens convention and uses `ClassView` to resolve its basis. **This does not mean that every Excel function has a deployed F### number.**
+- `MethodBinding` with `on`, `reads`, ordered `effects`, `population`, `truth`, `demand`, `SigRev`. `WideFieldMask` selects field positions and footprints; it is not a business-value table.
+- `BindStore::register` refuses altered behavior for an existing classid. To change meaning, use a derived class and versioned reroute. Historical binding interpretation is not historical data-value replay.
 
-## 1. Current GridCraft facts (source-verified)
+The [ClassView field basis](https://github.com/AdaWorldAPI/lance-graph/blob/main/crates/lance-graph-contract/src/class_view.rs) resolves field names *late*, without copying labels into the hot lanes. DR's [routing contract](https://github.com/AdaWorldAPI/lance-graph/blob/main/crates/lance-graph-dt64/src/dr.rs) maps coordinates to classes; it does not execute the method. Do not introduce a GridCraft-local canonical registry, a global per-formula F-number table, or a parallel codebook.
 
-- [crates/formula/src/lib.rs](https://github.com/AdaWorldAPI/gridcraft/blob/main/crates/formula/src/lib.rs) already separates Excel lexer/parser/AST/printer and reference adjustment. Retain this syntax layer.
-- [crates/functions/src/lib.rs](https://github.com/AdaWorldAPI/gridcraft/blob/main/crates/functions/src/lib.rs) describes functions with FnSpec and currently evaluates already-evaluated arguments via function pointers; range arguments may arrive as Value::Array. The lookup-by-name table is **not** an authoritative F### registry.
-- [crates/calc/src/eval.rs](https://github.com/AdaWorldAPI/gridcraft/blob/main/crates/calc/src/eval.rs) has Ev::V(Value), Ev::R(Vec<Area>) and Ev::L(Arc<Lambda>); Host::range_values defaults to collecting a Vec<Value>, with a visit_range sparse route. These are concrete materialization hotspots. Simply changing CellStore physical layout does not eliminate them.
-- [crates/calc/src/recalc.rs](https://github.com/AdaWorldAPI/gridcraft/blob/main/crates/calc/src/recalc.rs) maintains a derived dependency graph and recalculation lifecycle. Its graph cannot become a second canonical Bag state.
-- [crates/model/src/sheet.rs](https://github.com/AdaWorldAPI/gridcraft/blob/main/crates/model/src/sheet.rs) keeps spill cells and ranges. Spills should resolve as witnessed anchor + shape + terminal presentation when an F### method permits it.
+**Before assigning any Excel spelling to a method:** audit the owning `ClassView`/behavior-lens basis, `MethodId`, `SigRev`, operands, guard, result shape, and existing admission. If absent, request a new owner-approved method, not an invented ordinal.
 
-**Next source audit before code:** identify existing F### method registry and numbering, OGAR vocabulary/alias rules, Codegraph/Kythe source-symbol and edge schemas, and the **exact** R2IL behavioral contract in its owners. The current source inspection has *not* verified a canonical F### registry, Kythe adapter for GridCraft or a direct R2IL formula mapping. Treat these as OPEN, never as implemented facts.
+## 3. What GridCraft can preserve and later adapt
 
-## 2. Required formula lowering (normative target, not present implementation)
+Source facts: [Formula parser/AST](https://github.com/AdaWorldAPI/gridcraft/blob/main/crates/formula/src/lib.rs); [FnSpec name table](https://github.com/AdaWorldAPI/gridcraft/blob/main/crates/functions/src/lib.rs); [evaluator](https://github.com/AdaWorldAPI/gridcraft/blob/main/crates/calc/src/eval.rs) and its materializing `Host::range_values` route.
 
-    Excel source string and workbook names
-      → GridCraft syntax AST (preserve location, ref kind, formula text)
-      → typed formula semantic binding (source spans, field refs, argument kinds)
-      → canonical MethodRef / F### resolution under an owning versioned registry
-      → Bagop method application over witnessed Bag population
-      → **only admitted** Quack / RelAlg / mask-risc operators
-      → ndarray::simd position/mask/fold execution
-      → demanded scalar, lazy spill window or terminal serialization
+A future GridCraft binding can map **Excel syntax** to a verified DT64 method pointer. It must preserve source spans, reference kind, user-visible error/default, volatile and ordering semantics, and distinguish absent, empty, blank, formula cache and spill. None of these are excuses to mutate method identity or turn a `Vec<Value>` / `CellStore` cache into a canonical runtime.
 
-**F### is a semantic method handle**, not an Excel function-name hash, synthetic customer key, local ordinal dictionary, or direct SIMD opcode. If a method already exists in the canonical vocabulary, alias Excel syntax to that existing meaning; if no equivalent exists, request an *owner-level* method proposal and show independent Excel-compatible semantics. No ad hoc F-number assignment.
-
-A formula can compose F### calls as a method DAG of references. The DAG is a *derived* witness/provenance view; evaluation must not expand referenced ranges to row objects or Vec<Value> merely to pass between calls. **No cross-program derived-mask reuse, Gather or cross-table lane-derived address without existing admission**; a plausible-looking formula does not confer new execution rights.
-
-## 3. Separate the four graphs (no dilution)
-
-| View | Owns | Forbidden cross-contamination |
+| Formula family | Optional adapter concern | Shared law |
 |---|---|---|
-| GridCraft formula AST | Surface syntax, relative/absolute references, source spans, operator spelling, Excel compatibility | Must not own canonical Bag identity or mask execution |
-| F### / Bagop method DAG | Typed method meaning, argument shape, call edges, witness requirements, admitted lowering | Must not redefine Kythe, R2IL or Java methods |
-| Kythe / Codegraph projection | Source facts, symbol/definition/use/call provenance and impact analysis **to the extent their actual source contracts support them** | Not a second formula evaluator; graph is derived/read-only, not a source of canonical data values |
-| R2IL | Machine/behavioral semantics and their owner-declared instruction vocabulary, when legitimately relevant to an implementation proof | Do not invent Excel-to-R2IL instruction aliases, overwrite R2IL opcode meanings, or preconvert live R2IL into lossy static shadow for formula execution |
+| XVERWEIS | Exact/first/last/approx/wildcard Excel match/return semantics and explicit ordering | Resolve a DT-bound method; coordinate result is not the method pointer |
+| SUM/COUNT/MIN/MAX | Numeric/error/NULL compatibility | Admitted typed fold, not necessarily a new F### word |
+| FILTER/GROUPBY/PIVOTBY | Excel shape, order and spill | Admitted selection/group fold with witness and multiplicity |
+| IF/LET/LAMBDA | Lazy branches, evaluation limits, reference-valued closures | No universal "everything is one fold" claim |
+| RAND/NOW/INDIRECT | Time/external effects and dynamic references | Admit effects and permissions explicitly, or refuse |
 
-Preserve exact source identity and lineage: original formula location → parsed AST span → method identity/version → admitted operator/plan identity → native symbol/impl → result witness. A Codegraph/Kythe export can *describe* this chain without owning its execution or inventing a parallel canonical record population. If the existing codegraph fork has no such interface, record a missing adapter; do not manufacture a competing schema under GridCraft.
+If no lawful polyfill exists, **do not silently route a mounted canonical tile through GridCraft's materializing interpreter**. Ordinary independent local Excel workbooks may still use their existing engine; this proposal does not authorize a global rewrite.
 
-See [ruff R2IL plan](https://github.com/AdaWorldAPI/ruff/blob/main/.claude/plans/r2il-behavioral-ir-v1.md), which demands preserving typed IR rather than stringify-and-reparse; [OGAR ogar-r2il](https://github.com/AdaWorldAPI/OGAR/blob/main/crates/ogar-r2il/src/lib.rs), whose machine vocabulary is a distinct addressable reading, not a generic spreadsheet opcode set; and [Codegraph](https://github.com/AdaWorldAPI/codegraph), whose current repository implementation must be separately audited for applicable graph ingestion.
+## 4. Kythe / R2IL / Codegraph non-dilution
 
-## 4. Formula families and explicit stop cases
+- **Kythe and Codegraph:** existing code and symbol/provenance models remain authoritative only for what their own schemas can express. A formula→method→native symbol trace, if actually supported, is **derived analysis evidence**, never a second runtime or method-identity registry.
+- **R2IL:** preserve machine/behavioral instruction identity and typed semantics; **do not alias Excel SUM/XVERWEIS into R2IL machine opcodes**. R2IL is not a mandatory execution hop for a spreadsheet or SAP tile.
+- Existing [ruff R2IL plan](https://github.com/AdaWorldAPI/ruff/blob/main/.claude/plans/r2il-behavioral-ir-v1.md) says to preserve typed IR rather than stringify and rediscover it. The exact adapter for formula provenance is **not verified**; there is no justification to invent a parallel graph schema in GridCraft.
 
-| Excel syntax family | Required F### / Bagop shape | Admission policy |
-|---|---|---|
-| SUM, COUNT, MIN/MAX, numeric aggregates | Typed masked fold over admitted Bag population with correct Excel numeric/error semantics | Cite existing kernel and owner law |
-| XVERWEIS | Ordered first/last/approximate/wildcard modes as *separately admitted* Bagop fold methods | First/last order witness mandatory; other modes refuse until proved |
-| FILTER / GROUPBY / PIVOTBY | Bag selection, grouped fold and lazily addressed result | Multiplicity, shape, ordering and legal mask reuse |
-| Arithmetic/comparison | Typed per-position method, state handling, no lossy decimal conversion | No unsafe u8/i8 mix; scalar value is not always Bag fold |
-| INDEX / OFFSET / INDIRECT / structured references | Reference-valued lens and dynamic binding, not full range hydration | Reject unadmitted cross-table Gather, volatile dependencies |
-| IF / IFERROR / LET / LAMBDA / MAP / REDUCE | Control-flow, closure and lazy method composition with explicit evaluation/fuel semantics | Never evaluate forbidden branches just to build a mask; no Java/PowerShell object interpreter |
-| RAND / NOW / external/data-linked functions | Source/time/effect/volatility witness | May be not expressible; typed refusal and explicit effect authority |
-| Unsupported function | No invented implicit function-pointer fallback | Keep imported formula text intact and show unimplemented/status appropriately |
+## 5. Deferred independent test gates
 
-This plan does not assert every Excel operation is mathematically a fold. Every executable formula needs a typed method/polyfill contract; some methods are elementwise, control-flow, effect-bearing or reference-valued. **The canonical path does not silently route these back through GridCraft's old materializing evaluator.**
+1. Same verified `MethodRef` plus schema and signature yields identical operation meaning across label rename; wrong basis/guard refuses.
+2. Changed method effect order under same classid is refused; derived class/reroute changes behavior at a new version only.
+3. One XVERWEIS-named operation invoked without Excel may produce a witnessed coordinate and support two property dereferences without row-object hydration; a separate Excel adapter tests its own return value.
+4. Independently test duplicate keys, source order, exact decimal precision, missing/blank/error/spill, volatile and lazy control flow for **each supported Excel mode**.
+5. Check no per-row `Vec<Value>`/PSCustomObject/Cell materialization during canonical tile execution, and count cold bind versus hot fold versus terminal output.
+6. R2IL opcode vocabulary and Kythe/Codegraph schemas do not change to accommodate formula evaluation; only owner-approved read-only provenance traces are allowed.
 
-## 5. Falsifier and cost gates
-
-**F0 formula corpus:** exact syntax and source spans for ordinary references, 2-row header mapping, named ranges, XVERWEIS duplicates, 65,536 identities, 30×12 viewport, blanks/missing/empty text, exact decimals, a volatile expression, a conditional with a forbidden branch, and recursive LAMBDA fuel. Two differently scoped populations share external labels. Independent Excel-style scalar oracle is separate from runtime F### map.
-
-1. **No numbering split:** resolving the same formula under same registry yields identical MethodRef; unknown F### registry refuses. Disable the version/namespace check and trigger a wrong binding.
-2. **No value hydration:** 65,536 logical rows with SUM and XVERWEIS do not create a row object or Vec<Value> per element in canonical execution. Count allocations and method crossings. Disable lazy range routing; catch population-sized hydration.
-3. **No codegraph dilution:** codegraph view contains only source/provenance mappings allowed by its real contract; fingerprinting the formula AST and F### plan does not mint a new method identity. A changed source span updates provenance without changing Bag data.
-4. **No R2IL alias:** verify machine-domain R2IL vocabulary is unchanged and Excel SUM/XVERWEIS are not reinterpreted as R2IL opcodes. Contradicting instructions fail vocabulary tests.
-5. **Semantics:** compare error, array-lift, reference, closure, volatile and first/last ordering cases against independent oracle; unsupported cases refuse loudly rather than silently fall back to legacy execution.
-6. **Witnesses:** foreign frame, edited value, stale method registry, revoked OGAR scope all refuse; disable each witness individually and demonstrate red checks.
-7. **Cost:** report parse/bind, method DAG build, cold prepared Bag binding, warm method invocation, viewport resolution, spill access, provenance extraction and export independently. Do not count codegraph graph construction as kernel execution.
-
-## 6. Ownership, decisions and implementation sequence
-
-| Open decision | Owner | Rule |
-|---|---|---|
-| Is F### a deployed canonical ID namespace or a requested naming pattern? | Canonical vocabulary owner (lance-graph/OGAR), verify source | Do not mint until confirmed |
-| How can a formula bind to a versioned MethodRef? | Bagop + DT64, P2 | No independent function-name-to-ordinal authority |
-| Which formula families have admitted execution? | Quack/RelAlg/mask-risc + ndarray | No unadmitted Gather, composition or mask reuse |
-| How are source/behavior graphs exported? | Existing Kythe/R2IL/Codegraph owners | Read-only projection/adapter; no forked graph semantics |
-| How does GridCraft retire Value::Array hydration? | GridCraft P3 | One long-term Bagop core, compatibility only at boundary |
-| How are time/external/volatile effects authorized? | Method owner / scope owner | No silent host-local effects in canonical Bag execution |
-
-**Decision log 2026-11-05:** formula F### polyfills and Kythe/R2IL/Codegraph non-dilution are new explicit operator constraints. Existing F### numeric assignments and a ready-made formula→R2IL/Codegraph adapter were **not verified** and must not be asserted.
-
-**Next implementation PR (BLOCKED):** one selected, verified existing F### (or owner-approved method) for a non-materializing SUM/COUNT with an independent oracle, preserving a formula AST/Codegraph provenance link. Expand to XVERWEIS only after P2 ordered selection admission. **No code changes in this PR.**
+**POC status:** **NOT REQUIRED** to prove AD↔Entra↔EXO GUID128 chained strides and SAP-style property folds. P0/P1 and current OGAR/dir-sim/SAP code own that proof; P2 is optional operation-pointer integration. This PR creates no new production behavior, IDs, formula backend or Codegraph dependency.
