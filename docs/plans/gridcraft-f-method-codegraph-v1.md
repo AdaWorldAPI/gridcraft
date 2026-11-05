@@ -1,5 +1,9 @@
 # GRIDCRAFT-F-METHOD-CODEGRAPH-1: Formula F### Bagop polyfills without Kythe/R2IL/Codegraph dilution
 
+## Scope reset: formula polyfills deferred (2026-11-05)
+
+F### formula polyfill/Codegraph hygiene is a **future consumer problem**, not a dependency or first milestone of the SAP-shaped GUID-tile POC. No Excel formula registry, Kythe/R2IL integration or Codegraph adapter must be built for that POC. The core work is the existing dir-sim/OGAR 128-bit scoped GUID correspondence + lance-graph-sap typed lane fold + ndarray positional discipline, returning a logical PSCustomObject-shaped tile projection without per-row object allocation. Keep this plan parked until a formula consumer requires its admission. Existing R2IL semantics and code-analysis vocabularies remain unchanged.
+
 **Status:** PROPOSED / architecture only. **Date:** 2026-11-05. **Owner:** GridCraft for Excel formula grammar and presentation. **Method identity, Bagop semantics and admissibility:** existing canonical owning registries in lance-graph / OGAR, to be established by source audit. **Evidence/provenance owners:** existing Kythe, R2IL, and Codegraph components, each under its own contract.
 
 **Depends on:** [P0 lance-graph #1960](https://github.com/AdaWorldAPI/lance-graph/pull/1960), [P1 ndarray #408](https://github.com/AdaWorldAPI/ndarray/pull/408), [P2 Bagop #1961](https://github.com/AdaWorldAPI/lance-graph/pull/1961), [P3 virtual GridCraft #1](https://github.com/AdaWorldAPI/gridcraft/pull/1). **Downstream:** P5 report-rs and P6 falsifier.
