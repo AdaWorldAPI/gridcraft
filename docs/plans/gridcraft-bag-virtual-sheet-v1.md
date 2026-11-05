@@ -1,78 +1,46 @@
-# GRIDCRAFT-BAGSHEET-1: Virtual worksheet over the holographic Bag
+# GRIDCRAFT-VIRTUAL-TILE-CONSUMER-1: Spreadsheet presentation over routed SoA coordinates
 
-## Scope reset: deferred GridCraft consumer, NOT POC core (2026-11-05)
+**Status:** DEFERRED CONSUMER STUDY / draft plan only. **Date:** 2026-11-05. **Owner:** GridCraft for formula syntax, worksheet presentation and XLSX compatibility. No role in canonical identity, DT behavior, DR routing or substrate execution.
 
-**This document is a consumer-compatibility plan, not the foundational architecture or the first implementation sprint.** The concept POC lives in lance-graph/OGAR/ndarray, reusing **lance-graph-sap CATS typed tile folding** and **lance-graph-dir-sim GUID128 correspondence**. GridCraft is optional later, for exposing spreadsheet-shaped projections. Neither a new GridCraft engine nor a ground-up rewrite is required to demonstrate SAP-shaped PSCustomObject tile joins without materialization.
+## Scope, deliberately narrow
 
-Any earlier language treating an additive BagSheet, F### method registry or replacement GridCraft evaluator as a POC prerequisite is superseded. Do not implement GridCraft until the minimal scoped Guid128 tile fold has a measured independent oracle. See [P0 #1960](https://github.com/AdaWorldAPI/lance-graph/pull/1960).
+**The first POC is not in GridCraft.** It is a SAP / PSCustomObject-shaped one-key ordinal-addressed logical tile over AD/Entra/EXO hybrid correspondence and a typed CATS-style fold in lance-graph/OGAR/ndarray. DR teleports the computation through coordinates. DT enforces class/behavior parity. Quack lowers an admitted operation and mask-RISC/ndarray execute it. GridCraft is an **optional human-facing view** of the same already-bound coordinates.
 
-**Status:** PROPOSED / plan-only. **Date:** 2026-11-05. **Owner:** GridCraft. **Depends on:** lance-graph P0/P2 and ndarray P1.
+A spreadsheet cell is a **presentation address**, not an identity. GridCraft must not mint an alternate `Guid128` mapping, workbook codebook authority, DR coordinate registry or a second DT behavior store. It must not make a local workbook engine a prerequisite for an SAP-shaped tile.
 
-**Intent:** Reuse GridCraft as the familiar spreadsheet façade, but mount an authorized holographic Bag so cells, XVERWEIS and PSCustomObject-style properties are semantic projections. DR64 exists only for Bag representation. GridCraft must not create a second canonical workbook row/value authority.
+## Actual source baseline and migration seam
 
-## Existing GridCraft seam
+- [`crates/formula/src/lib.rs`](https://github.com/AdaWorldAPI/gridcraft/blob/main/crates/formula/src/lib.rs) owns Excel syntax AST/parser/printer and reference adjustments.
+- [`crates/model/src/store.rs`](https://github.com/AdaWorldAPI/gridcraft/blob/main/crates/model/src/store.rs) has the existing `CellStore`; [`sheet.rs`](https://github.com/AdaWorldAPI/gridcraft/blob/main/crates/model/src/sheet.rs) owns workbook cells, style and spill metadata.
+- [`crates/functions/src/lib.rs`](https://github.com/AdaWorldAPI/gridcraft/blob/main/crates/functions/src/lib.rs) dispatches already-evaluated function arguments. [`crates/calc/src/eval.rs`](https://github.com/AdaWorldAPI/gridcraft/blob/main/crates/calc/src/eval.rs) has a `Host::range_values` route that materializes `Vec<Value>`. The existing Excel engine is *not* automatically zero-hydration merely because the visible renderer is virtualized.
 
-- [CellStore](https://github.com/AdaWorldAPI/gridcraft/blob/main/crates/model/src/store.rs) holds 64-row copy-on-write bands with nested BTreeMap row/column cells. Good for normal standalone workbooks, inappropriate as an authoritative mirrored Bag.
-- [Sheet](https://github.com/AdaWorldAPI/gridcraft/blob/main/crates/model/src/sheet.rs) owns CellStore, spill map, spill ranges, styles/metadata and a transient SheetUid.
-- [Cell](https://github.com/AdaWorldAPI/gridcraft/blob/main/crates/model/src/cell.rs) owns value/formula/style payloads; [Calc](https://github.com/AdaWorldAPI/gridcraft/blob/main/crates/calc/src/recalc.rs) owns an independently derived dependency graph.
-- [XLSX](https://github.com/AdaWorldAPI/gridcraft/blob/main/crates/xlsx/src/lib.rs) currently reads into a Workbook and emits from one. The entire model need not be replaced in one PR; an alternate **mounted BagSheet** backing is proposed.
-- GridCraft currently has a virtualized *renderer*, which does not by itself prove a virtualized semantic cell store.
+**Keep these baseline features intact for local Excel files.** If a borrowed SoA tile is exposed as a virtual sheet, it is a distinct read-only *provider boundary*, never a copy of all canonical fields into `CellStore`.
 
-## Proposed boundary
+## Optional future provider contract
 
-    UI cell (sheet, row, column)
-      → virtual sheet descriptor (ordering, visible window, DT64 property binding)
-      → authorized witnessed Bagop selection
-      → ndarray/mask-risc under exclusive holographic DR64 Bag
-      → value or terminal viewport cell only on demand
+```text
+GridCraft cell (sheet, display row, field column)
+   → presentation order + requested viewport
+   → source-qualified CoordRef { population, row ordinal, scope, frame/layout, snapshot }
+   → DT MethodRef + ClassView field ordinal / WideFieldMask
+   → admitted Quack/mask-RISC or lawful positional property read
+   → demanded scalar / viewport cell / XLSX egress only
+```
 
-Presentation coordinates are not global identity and must not be stored as a second identity registry. View holds a source receipt, scope, frame/layout digest, value revision, field/method bindings and view order. Revalidation at each terminal operation prevents stale data or revocation leaks. The Bag's owner performs canonical writes; if D4/S-INGRESS is blocked, mounted cells are read-only and editing refuses explicitly.
+The `CoordRef` is a conceptual reference, **not** a shipped Rust ABI. A local ordinal is invalid after an unseen permutation. Binding must either revalidate or refuse when layout, source version, scope, class basis or method signature changes. Missing/error/blank/empty text have separate Excel consumer semantics and must not be inferred from DR masks. A preview is not an authorization source.
 
-**No GridCraft-owned Bag rows, no separate CustomerStore, no per-population Cell allocations, no app-specific SIMD or Gather.** Ordinary unmounted local workbooks may keep their current CellStore; the new backing's data source must be authoritative only in Bag.
+**XVERWEIS distinction:** Excel has its own return semantics; a method pointer in DT can resolve a coordinate, while Excel may request its return property. Do not encode Excel's first/last/spill rules into the shared operation pointer. See [P2](https://github.com/AdaWorldAPI/lance-graph/pull/1961).
 
-## Obligations by feature
+## Optional integration acceptance (not POC prerequisite)
 
-| Feature | BagSheet interpretation | Refusal / open gate |
-|---|---|---|
-| Viewport | Resolve only visible cells from authorized selection | Scope/frame mismatch invalidates cached window |
-| XVERWEIS | P2 ordered Bagop fold | Unsupported mode refuses, not HashMap fallback |
-| FILTER | Admitted selection mask | Derived mask reuse requires witness/admission |
-| SORT | Order descriptor over addressed occurrences | Never assume tile order equals sheet order |
-| Spilled arrays | Anchor, shape, value projection; hydrate visible children only | Exact spill behavior requires independent oracle |
-| Pivot | Grouped Bag aggregation/fold | Bag multiplicity and ordering preserved |
-| Formulas | Syntax AST + dependency descriptors | No second full result table for Bag-backed cells |
-| Styles | Sparse local presentation metadata | No authority over Bag value or identity |
-| Undo/edit | Versioned write intent and read-after-write witness | D4/S-INGRESS writer unresolved, refuse writes |
-| XLSX ingress | Parse bytes, check cached formulas/spills, lower by canonical owner | No rehydrated canonical workbook duplicate |
-| XLSX/CSV egress | Stream authorized terminal view where possible | Serialization necessarily materializes bytes |
-| PSCustomObject | Named Bag property projection | Physical object only at explicit external membrane |
+When and only when the core tile proof exists:
 
-Excel compatibility is a semantic gate: Absent, Blank, EmptyText, Missing, Formula, Spilled, error, date/text, and exact decimals must not silently collapse. A cached formula is not proof of live recalculation.
+1. One mounted synthetic tile with source-qualified GUID binding, field ordinals and a 30 × 12 viewport; no one-`Cell`-per-source-row store.
+2. Change the tile's row ordering; the stale viewport reference refuses or rebinds and agrees with an independent scalar source oracle.
+3. Present the same two fields via virtual sheet and logical PSCustomObject-shaped view; provenance and meaning agree.
+4. If adding Excel XVERWEIS, independently verify its **consumer** order, duplicate match, error, blank and spill semantics. Unsupported modes refuse. No implicit HashMap/row-cache fallback to claim a Bagop speedup.
+5. Separate parser, cold bind, warm property access and XLSX egress cost. Source text and serialization necessarily materialize bytes.
 
-## Smallest executable successor (not this PR)
+**No approved work:** no ground-up GridCraft rewrite, forced universal F### formula migration, second canonical workbook engine, new SIMD kernel, new Gather or source writer. Preserve the old Excel engine for ordinary workbooks, but never treat it as authoritative over a mounted canonical tile.
 
-Mount one synthetic DR256×256 Bag (65,536 identities, 24 fields) into a virtual sheet. Show a 30×12 viewport, one exact XVERWEIS, one spilled FILTER and one property projection. Compare against independent scalar Excel oracle; require no persistent GridCraft Cell per Bag row, zero lookup rerouting after prepared binding and bounded allocations by visible working set. Test colliding labels across two tenant scopes and scope revocation. Do not declare zero-byte output, zero file decoding or zero cost; separate all boundaries.
-
-**Disable runs:** remove frame/layout witness, scope witness, value revision, order witness, and a spill-state check, each must fail its targeted test. Benchmark cold binding, warm lookup, viewport and serialization separately.
-
-## Decisions and next PR
-
-| Requirement | Owner | Gate |
-|---|---|---|
-| One Bag substrate | P0 lance-graph | Owner reconciliation |
-| XVERWEIS ordering/fold | P2 lance-graph | Admitted operator or typed refusal |
-| FACET STRIDE | P1 ndarray | Backend parity and positional access |
-| Cell provider seam | GridCraft | Can preserve standalone mode? |
-| Scope | OGAR | Authorized tenant-qualified projection |
-| Write authority | D4/S-INGRESS | Read-only until approved |
-| Cross-repo oracle | P6 GridCraft | Falsifiers before implementation |
-
-**Decision log 2026-11-05:** propose an additive Bag-backed virtual mode first, not an all-at-once replacement of GridCraft. **Implementation successor:** only after P0/P1/P2 approval, isolated provider trait + one read-only viewport, no production edits here.
-
-## Architectural direction: one long-term execution core, not two (2026-11-05)
-
-The additive BagSheet mode above is an **incremental proof and migration bridge**, not the desired permanent architecture. The long-term target replaces value-owning workbook execution with a single witnessed Bagop/F### method core while retaining GridCraft's formula grammar, XLSX interoperability, presentation and user interaction. Standalone legacy workbooks may continue to use current CellStore while migrating; they must not become a silent fallback for mounted Bag-backed formulas or a second authoritative Bag model.
-
-[GridCraft P7 #3](https://github.com/AdaWorldAPI/gridcraft/pull/3) is the formula-method plan. Specifically, `crates/functions/src/lib.rs` dispatches over already-evaluated `Arg` values, and `crates/calc/src/eval.rs` defines `Host::range_values` by collecting `Vec<Value>`; a new BagSheet source alone does **not** remove these hydration paths. Formula syntax must resolve to the owning canonical F###/Bagop MethodRef (registry identity and numeric naming not yet verified). The owner must admit each method's semantics; ndarray provides only the positional execution mechanics.
-
-**Code intelligence non-dilution:** Existing Kythe/R2IL/Codegraph meanings are not modified to host Excel functions. Derived source-location, call/def-use and formula→method provenance may project through existing, verified adapters, but do not become a second behavioral IR, source registry or runtime dependency. R2IL machine opcode semantics must never be relabeled as Excel functions. No implementation before P7 method ownership and scalar oracle gates.
+**Dependencies:** [P0 routing/parity](https://github.com/AdaWorldAPI/lance-graph/pull/1960), [P1 positional mechanics](https://github.com/AdaWorldAPI/ndarray/pull/408); P2 only for a requested lookup method. P4 Java is non-blocking reference only. P7 formula integration is a separate optional research proposal. This document does not block the core SAP/Guid128 POC.
