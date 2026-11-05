@@ -1,5 +1,11 @@
 # GRIDCRAFT-BAGOP-FALSIFIER-1: Cross-repository proof and admission program
 
+## POC scope reset: integration corpus deferred (2026-11-05)
+
+This GridCraft/Excel falsifier remains a **downstream integration gate**, not a prerequisite for the core SAP-shaped Guid128 tile POC. The core independent proof belongs in lance-graph/OGAR: scoped, unambiguous 128-bit GUID correspondence over separate SoA populations; one SAP/CATS-shaped typed property fold using Quack/mask-risc; logical PSCustomObject field projection; and zero per-row object materialization in the hot path. Distinguish cold sorted index building from hot numeric fold. The existing correspondence implementation must not be relabeled as a completed pure `simd_stride` GUID join.
+
+P3 GridCraft, P5 workbook, P7 F###, and this Excel parity suite may follow **after** that POC. None is needed to admit or benchmark its first business tile fold.
+
 **Status:** PROPOSED / planning-only. **Date:** 2026-11-05. **Owner:** GridCraft as integration harness; all semantic and kernel decisions remain with their owners. **Depends on:** P0–P3, P5 and [P7 F### formula polyfills #3](https://github.com/AdaWorldAPI/gridcraft/pull/3). **P4 (lance-graph-java) is a non-blocking historical/empirical precedent solely for folding without per-row materialization, not an implementation, runtime or semantic dependency.**
 
 **Research question:** Can the exact same witnessed holographic Bag answer Excel XVERWEIS, a PSCustomObject-shaped named property and direct Bagop folding without materializing one row/cell/object per logical identity, without fabricating a second authority, and while preserving Excel semantics and OGAR scopes?
