@@ -1,6 +1,6 @@
 # GRIDCRAFT-BAGOP-FALSIFIER-1: Cross-repository proof and admission program
 
-**Status:** PROPOSED / planning-only. **Date:** 2026-11-05. **Owner:** GridCraft as integration harness; all semantic and kernel decisions remain with their owners. **Depends on:** P0–P5.
+**Status:** PROPOSED / planning-only. **Date:** 2026-11-05. **Owner:** GridCraft as integration harness; all semantic and kernel decisions remain with their owners. **Depends on:** P0–P3 and P5. **P4 (lance-graph-java) is a non-blocking historical/empirical precedent solely for folding without per-row materialization, not an implementation, runtime or semantic dependency.**
 
 **Research question:** Can the exact same witnessed holographic Bag answer Excel XVERWEIS, a PSCustomObject-shaped named property and direct Bagop folding without materializing one row/cell/object per logical identity, without fabricating a second authority, and while preserving Excel semantics and OGAR scopes?
 
@@ -70,7 +70,7 @@ Compare to GridCraft CellStore and report-rs #33 **only where work and witness o
 |---|---|---|
 | R0 | P0 owner decision | One-authority law with no hidden contradictory DR interpretation |
 | R1 | P1, P2 owners | Exact-match ordered fold admitted or explicit STOP |
-| R2 | P3, P4 review | GridCraft virtual presentation and object façade bounds |
+| R2 | P3 review | GridCraft virtual presentation and object-materialization bounds; P4 reference optional |
 | R3 | P5 convergence | report-rs does not create a second source |
 | R4 | DRISA M1/M2, OGAR | Frame, route and scope attestations |
 | R5 | D4/S-INGRESS if writing requested | Canonical writer admission; otherwise read-only |
@@ -83,5 +83,5 @@ Compare to GridCraft CellStore and report-rs #33 **only where work and witness o
 - [P0/P2 source repository](https://github.com/AdaWorldAPI/lance-graph), [DRISA lab #1955](https://github.com/AdaWorldAPI/lance-graph/pull/1955)
 - [P1 ndarray FACET STRIDE](https://github.com/AdaWorldAPI/ndarray/blob/master/src/simd_stride.rs)
 - [P3 GridCraft CellStore](https://github.com/AdaWorldAPI/gridcraft/blob/main/crates/model/src/store.rs)
-- [P4 Java membrane](https://github.com/AdaWorldAPI/lance-graph-java/blob/main/java/README.md)
+- [P4 non-blocking evidence for non-materializing native folds](https://github.com/AdaWorldAPI/lance-graph-java/blob/main/java/README.md)
 - [P5 report-rs PR #33](https://github.com/AdaWorldAPI/report-rs/pull/33)
