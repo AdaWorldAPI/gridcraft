@@ -1,6 +1,6 @@
 # GRIDCRAFT-BAGOP-FALSIFIER-1: Cross-repository proof and admission program
 
-**Status:** PROPOSED / planning-only. **Date:** 2026-11-05. **Owner:** GridCraft as integration harness; all semantic and kernel decisions remain with their owners. **Depends on:** P0–P3 and P5. **P4 (lance-graph-java) is a non-blocking historical/empirical precedent solely for folding without per-row materialization, not an implementation, runtime or semantic dependency.**
+**Status:** PROPOSED / planning-only. **Date:** 2026-11-05. **Owner:** GridCraft as integration harness; all semantic and kernel decisions remain with their owners. **Depends on:** P0–P3, P5 and [P7 F### formula polyfills #3](https://github.com/AdaWorldAPI/gridcraft/pull/3). **P4 (lance-graph-java) is a non-blocking historical/empirical precedent solely for folding without per-row materialization, not an implementation, runtime or semantic dependency.**
 
 **Research question:** Can the exact same witnessed holographic Bag answer Excel XVERWEIS, a PSCustomObject-shaped named property and direct Bagop folding without materializing one row/cell/object per logical identity, without fabricating a second authority, and while preserving Excel semantics and OGAR scopes?
 
@@ -85,3 +85,16 @@ Compare to GridCraft CellStore and report-rs #33 **only where work and witness o
 - [P3 GridCraft CellStore](https://github.com/AdaWorldAPI/gridcraft/blob/main/crates/model/src/store.rs)
 - [P4 non-blocking evidence for non-materializing native folds](https://github.com/AdaWorldAPI/lance-graph-java/blob/main/java/README.md)
 - [P5 report-rs PR #33](https://github.com/AdaWorldAPI/report-rs/pull/33)
+
+## G16–G19: F### formula method and Codegraph non-dilution gates (2026-11-05)
+
+These gates extend G0–G15 and depend on [P7 #3](https://github.com/AdaWorldAPI/gridcraft/pull/3). The F### numbering/MethodRef registry is **not verified** and must be discovered in its canonical owner before an implementation can claim parity.
+
+| Gate | Positive independent oracle | Negative control |
+|---|---|---|
+| G16 method identity | Identical parsed formula+scope+registry version resolves to the same canonical F###/MethodRef; change in source location affects provenance but not method semantics | Locally mint an ordinal or remove registry version check: red |
+| G17 no materializing formula fallback | SUM/COUNT and admitted XVERWEIS over 65,536 identities perform no per-row `Vec<Value>` or `Cell` hydration in canonical execution | Route to `Host::range_values` collecting entire population: allocation test red |
+| G18 Kythe/Codegraph boundary | Verified source/def-use/call provenance is derived, read-only and keyed to actual owner contract, not a second formula evaluator | Insert invented formula identity in Codegraph or mutate it as value authority: contract test red |
+| G19 R2IL integrity | Existing R2IL machine opcode vocabulary/semantics remain unchanged while formula method calls are separately traced | Alias an Excel formula to R2IL IntAdd or mint a competing opcode: vocabulary parity red |
+
+Additional semantics: lazy IF/LET/LAMBDA, volatile/effectful formulas, exact decimals, formula sources/spans and spilled arrays must have separate independent oracles or remain NOT ADMITTED. **Do not assert every formula is a reduction.** Formulas require typed F### method contracts; some lower to elementwise, control, reference or effect semantics. A source-level formula→method→operator mapping is provenance, not a new storage substrate.
