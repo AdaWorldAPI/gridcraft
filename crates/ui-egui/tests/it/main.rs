@@ -98,6 +98,7 @@ mod python_cell_edit;
 mod python_hidden;
 mod python_mode;
 mod quick_analysis_button;
+mod read_only_filter_menu;
 mod ref_edit;
 mod ribbon_layout;
 mod right_to_left;
