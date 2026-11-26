@@ -16,6 +16,8 @@
 //! `window.gridcraft` (`craft-web-api`) is the page command API in every mode: `request`,
 //! `execute`, `commands`, `docInspect`, `uiInspect` and `screenshot` over the control methods
 //! (`api`).
+//! `?readonly=1` opens workbooks view-only: selecting, scrolling, copying and switching sheets
+//! work; editing commands, Save and Save As do not, and nothing is downloaded or sent to a host.
 //! `?chrome=none|notitlebar|nofiletab` leaves the title bar and/or the File tab undrawn for a host
 //! that embeds the sheet in its own window (see `Chrome`). Preferences (theme, interface size,
 //! editing options…) are kept in `localStorage` (`prefs`).

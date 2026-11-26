@@ -7115,6 +7115,7 @@ mod objects;
 mod python_cells;
 mod python_commands;
 mod python_files;
+mod read_only;
 
 #[test]
 fn text_to_columns_keeps_a_mid_field_quote() {

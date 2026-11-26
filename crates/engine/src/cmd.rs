@@ -89,9 +89,31 @@ impl CommandInfo {
     }
 }
 
+/// Why a command is unavailable in view-only mode ([`Session::set_read_only`]).
+pub const READ_ONLY: &str = "this workbook is open read-only";
+
+/// Whether command `id` (a query when `query`) runs in view-only mode: queries, except
+/// `file.saveBytes` (it encodes the workbook for saving) and `macro.check` (its dry run runs the
+/// macro's steps), the commands that only look around ([`crate::macros::debug::LOOKS_AROUND`]: the
+/// selection, the active sheet, Go To, Find, zoom, copying, switching windows, closing), and
+/// opening a workbook and closing a window.
+pub fn runs_read_only(id: &str, query: bool) -> bool {
+    (query && !matches!(id, "file.saveBytes" | "macro.check"))
+        || crate::macros::debug::LOOKS_AROUND.contains(&id)
+        || matches!(id, "file.open" | "window.close")
+}
+
 impl CommandSpec {
+    /// Whether the command can run now: view-only mode first, then its own `enabled` rule.
+    pub fn check(&self, s: &Session) -> std::result::Result<(), String> {
+        if s.is_read_only() && !runs_read_only(self.id, !self.journal && !self.undoable) {
+            return Err(READ_ONLY.into());
+        }
+        (self.enabled)(s)
+    }
+
     pub fn info(&self, s: &Session) -> CommandInfo {
-        let e = (self.enabled)(s);
+        let e = self.check(s);
         CommandInfo {
             id: self.id,
             label: self.label,

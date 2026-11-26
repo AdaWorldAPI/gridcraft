@@ -6,6 +6,12 @@ use super::{Arc, Drag, FillTag, RangeRef, Rect, Sense, Sheet, SheetApp, Stroke, 
 /// Draws the filter-header popup: sort, search/select-all, apply/clear, a lazily installed table autofilter, new-open search focus and dismissal.
 pub(super) fn filter_menu(app: &mut SheetApp, ui: &mut egui::Ui, geo: &Geo, was_open: bool) {
     let Some((col, row, at)) = app.grid.filter_menu else { return };
+    // View-only (`Session::set_read_only`): sorting and filtering are edits, so the menu offers
+    // nothing, and it must not install a table's autofilter below (that bypasses the commands).
+    if app.session.is_read_only() {
+        app.grid.filter_menu = None;
+        return;
+    }
     let Some(d) = app.session.active() else { return };
     let wb = d.wb.clone();
     let si = wb.active_sheet();

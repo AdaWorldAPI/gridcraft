@@ -42,7 +42,10 @@ pub fn start() {
         // there is no parent, so that URL on its own stays the normal app with downloads.
         // `data-host="page"` on the canvas opts a page in instead: it runs GridCraft in its own
         // document and talks over DOM `CustomEvent`s on the canvas.
-        let bridge = crate::host::Bridge::detect(&canvas);
+        // `?readonly=1`: view-only. Editing commands, Save and Save As are unavailable
+        // (`Session::set_read_only`), and nothing is downloaded or handed to the host.
+        let read_only = crate::hostmode::read_only(query_param("readonly").as_deref());
+        let bridge = crate::host::Bridge::detect(&canvas, read_only);
         let app_bridge = bridge.clone();
         let result = eframe::WebRunner::new()
             .start(
@@ -62,6 +65,10 @@ pub fn start() {
                     let mut services = services(inbox.clone(), cc.egui_ctx.clone());
                     if let Some(bridge) = &app_bridge {
                         bridge.connect(&mut services, inbox.clone(), cc.egui_ctx.clone());
+                    }
+                    if read_only {
+                        session.set_read_only(true);
+                        services.download = Some(Box::new(|name: &str, _: &[u8]| log::info!("{name} not saved: the workbook is open read-only")));
                     }
                     let mut app = SheetApp::new(session, services);
                     app.ui.system_theme = true;
