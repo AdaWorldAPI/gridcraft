@@ -19,6 +19,10 @@
 //! - `gridcraft:dirty` whenever unsaved changes appear or go away, `gridcraft:failed` when the
 //!   app couldn't start.
 //!
+//! `?readonly=1` (`hostmode::read_only`) opens the host's workbook view-only: editing commands,
+//! Save and Save As are unavailable, and nothing is ever sent as `gridcraft:save`, not even an
+//! export ([`crate::host_save::outgoing`]).
+//!
 //! In both host modes the page starts with an empty workbook instead of a sample, saves and PDF
 //! exports are handed to the page rather than downloaded, and `?author=` names the user for new
 //! notes and comments.
@@ -31,7 +35,7 @@ use craft_web_host::{Mode, Outgoing, file_name, message_type};
 use gridcraft_ui_egui::{Inbox, Services, SheetApp};
 use wasm_bindgen::JsValue;
 
-use crate::host_save::{SaveMessage, sync_saved};
+use crate::host_save::{outgoing, sync_saved};
 use crate::hostmode::open_name;
 
 /// The app id in the host messages (`gridcraft:ready`).
@@ -49,13 +53,15 @@ pub struct Bridge {
     save_target: Rc<SaveTarget>,
     /// Names of the files handed to the host since the last frame.
     saved: Rc<RefCell<Vec<String>>>,
+    /// View-only (`?readonly=1`): nothing is handed to the host.
+    read_only: bool,
 }
 
 impl Bridge {
     /// The bridge for this page, or `None` when GridCraft isn't hosted: no `?host=parent` and no
     /// `data-host="page"` on the canvas, an unframed `?host=parent` page (it stays the normal app
     /// with downloads), or a parent on another origin.
-    pub fn detect(canvas: &web_sys::HtmlCanvasElement) -> Option<Self> {
+    pub fn detect(canvas: &web_sys::HtmlCanvasElement, read_only: bool) -> Option<Self> {
         let host = Host::connect(APP, canvas)?;
         let save_target = match host.mode() {
             Mode::Parent => {
@@ -68,7 +74,7 @@ impl Bridge {
             }
             Mode::Page => SaveTarget::Page(canvas.clone()),
         };
-        Some(Self { host: Rc::new(host), save_target: Rc::new(save_target), saved: Rc::default() })
+        Some(Self { host: Rc::new(host), save_target: Rc::new(save_target), saved: Rc::default(), read_only })
     }
 
     /// Send saved and exported files to the host instead of downloading them, and hear files
@@ -110,7 +116,10 @@ impl Bridge {
 
     fn post_save(&self, path: &str, bytes: &[u8]) -> Result<(), String> {
         let name = file_name(Some(path), "document");
-        self.save_target.post(SaveMessage::new(&name, bytes)).map_err(|e| e.as_string().unwrap_or_else(|| format!("{e:?}")))?;
+        let Some(save) = outgoing(self.read_only, &name, bytes) else {
+            return Err("the workbook is open read-only; nothing is saved".into());
+        };
+        self.save_target.post(save).map_err(|e| e.as_string().unwrap_or_else(|| format!("{e:?}")))?;
         self.saved.borrow_mut().push(name);
         Ok(())
     }
@@ -132,7 +141,7 @@ enum SaveTarget {
 }
 
 impl SaveTarget {
-    fn post(&self, save: SaveMessage<'_>) -> Result<(), JsValue> {
+    fn post(&self, save: crate::host_save::SaveMessage<'_>) -> Result<(), JsValue> {
         let buffer = js_sys::Uint8Array::from(save.bytes).buffer();
         let kind = message_type(APP, Outgoing::Save.kind());
         let payload = js_sys::Object::new();

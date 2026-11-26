@@ -18,6 +18,12 @@ impl<'a> SaveMessage<'a> {
     }
 }
 
+/// What the host receives for a file GridCraft would save: nothing in view-only mode
+/// (`?readonly=1`), whatever the file is, so a read-only page never sends `gridcraft:save`.
+pub fn outgoing<'a>(read_only: bool, name: &'a str, bytes: &'a [u8]) -> Option<SaveMessage<'a>> {
+    (!read_only).then(|| SaveMessage::new(name, bytes))
+}
+
 fn is_workbook(name: &str) -> bool {
     name.rsplit_once('.').is_some_and(|(_, ext)| WORKBOOK_EXTS.iter().any(|e| ext.eq_ignore_ascii_case(e)))
 }
@@ -50,6 +56,14 @@ mod tests {
             assert_eq!(message.name, name);
             assert_eq!(message.bytes, bytes.as_slice());
             assert_eq!(message.bytes.as_ptr(), bytes.as_ptr(), "the payload borrows the original bytes");
+        }
+    }
+
+    #[test]
+    fn a_read_only_page_hands_the_host_nothing() {
+        for name in ["finance.xlsx", "finance.pdf", "finance.csv", "document"] {
+            assert!(outgoing(true, name, &[1, 2, 3]).is_none(), "{name}");
+            assert!(outgoing(false, name, &[1, 2, 3]).is_some(), "{name}: an editing page still saves");
         }
     }
 

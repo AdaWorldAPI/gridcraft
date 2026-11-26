@@ -571,6 +571,8 @@ pub struct Session {
     /// Measures cell text for AutoFit Column Width. Without it (CLI, MCP) AutoFit uses
     /// [`cmd::format::approx_text_width`].
     pub text_width: Option<TextWidth>,
+    /// View-only mode ([`Session::set_read_only`]): only commands that look around run.
+    read_only: bool,
 }
 
 impl Session {
@@ -614,6 +616,9 @@ impl Session {
     /// is allowed. Front ends ask before opening an editor, so typing into a locked cell never
     /// leaves a draft that can't be entered (and so blocks saving).
     pub fn locked_cell_message(&self, sheet: usize, at: CellRef) -> Option<String> {
+        if self.read_only {
+            return Some(cmd::READ_ONLY.into());
+        }
         let d = self.active()?;
         let sh = d.wb.sheet(sheet)?;
         if !sh.is_protected() || !d.wb.styles.get(sh.style_id(at)).protection.locked {
@@ -704,6 +709,20 @@ impl Session {
         self.recording = self.recording.map(|r| r.min(self.journal.len()));
     }
 
+    /// View-only mode, for a host that shows a workbook it does not let the viewer change. While
+    /// it is on, only queries (except `file.saveBytes`) and the commands that look around run
+    /// ([`cmd::runs_read_only`]): selecting, switching sheets and windows, Go To, Find, zoom,
+    /// copying, opening and closing. Every other command, Save and Save As included, is
+    /// unavailable and changes nothing, and no cell can be edited ([`Session::locked_cell_message`]).
+    pub fn set_read_only(&mut self, on: bool) {
+        self.read_only = on;
+    }
+
+    /// Whether the session is in view-only mode ([`Session::set_read_only`]).
+    pub fn is_read_only(&self) -> bool {
+        self.read_only
+    }
+
     pub fn commands(&self) -> Vec<CommandInfo> {
         command_specs().iter().map(|c| c.info(self)).collect()
     }
@@ -713,7 +732,7 @@ impl Session {
     /// Panics inside commands are caught and reported; the workbook is restored.
     pub fn execute(&mut self, id: &str, params: Json) -> Result<Json> {
         let spec = find_command(id).ok_or_else(|| EngineError::UnknownCommand(id.to_string()))?;
-        if let Err(why) = (spec.enabled)(self) {
+        if let Err(why) = spec.check(self) {
             return Err(EngineError::Disabled(id.to_string(), why));
         }
         // A debugger whose undo group something else ended locks nothing any more (`macro.debug`

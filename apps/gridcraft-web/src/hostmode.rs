@@ -2,6 +2,12 @@
 //! (like [`crate::prefs`]): the name the bridge fills in when a host's open request has none.
 //! Which pages host the app is `craft-web-host`'s.
 
+/// `?readonly=`: view-only mode (`Session::set_read_only`) for `1` or `true`; anything else,
+/// or no value, keeps the editor.
+pub fn read_only(value: Option<&str>) -> bool {
+    value.is_some_and(|v| matches!(v.trim(), "1" | "true"))
+}
+
 /// The file name used when an open request carries no usable one.
 pub const DEFAULT_OPEN_NAME: &str = "Book.xlsx";
 
@@ -24,5 +30,13 @@ mod tests {
         assert_eq!(open_name("Budget.xlsx"), "Budget.xlsx");
         assert_eq!(open_name("Sheet2!Book.xlsx"), "Sheet2!Book.xlsx");
         assert_eq!(open_name("document"), DEFAULT_OPEN_NAME, "what the crate says for a missing or blank name");
+    }
+
+    #[test]
+    fn readonly_is_on_only_for_an_explicit_yes() {
+        assert!(read_only(Some("1")) && read_only(Some("true")) && read_only(Some(" 1 ")));
+        for v in [None, Some(""), Some("0"), Some("false"), Some("yes"), Some("readonly")] {
+            assert!(!read_only(v), "{v:?}");
+        }
     }
 }
